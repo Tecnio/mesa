@@ -69,6 +69,7 @@ License:        MIT AND BSD-3-Clause AND SGI-B-2.0
 URL:            http://www.mesa3d.org
 
 Source0:        https://archive.mesa3d.org/mesa-%{ver}.tar.xz
+Source1:        Mesa-MLAA-License-Clarification-Email.txt
 
 BuildRequires:  meson >= 1.3.0
 BuildRequires:  gcc
@@ -360,6 +361,7 @@ The drivers with support for the Vulkan API.
 
 %prep
 %autosetup -n %{name}-%{ver} -p1
+cp %{SOURCE1} docs/
 
 %build
 # ensure standard Rust compiler flags are set
