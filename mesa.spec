@@ -62,7 +62,7 @@
 
 Name:           mesa
 Summary:        Mesa graphics libraries
-%global ver 24.0.2
+%global ver 24.0.3
 Version:        %{lua:ver = string.gsub(rpm.expand("%{ver}"), "-", "~"); print(ver)}
 Release:        %autorelease
 License:        MIT AND BSD-3-Clause AND SGI-B-2.0
@@ -141,7 +141,6 @@ BuildRequires:  (crate(proc-macro2) >= 1.0.56 with crate(proc-macro2) < 2)
 BuildRequires:  (crate(quote) >= 1.0.25 with crate(quote) < 2)
 BuildRequires:  (crate(syn/clone-impls) >= 2.0.15 with crate(syn/clone-impls) < 3)
 BuildRequires:  (crate(unicode-ident) >= 1.0.6 with crate(unicode-ident) < 2)
-BuildRequires:  systemd-rpm-macros
 %endif
 %if %{with valgrind}
 BuildRequires:  pkgconfig(valgrind)
@@ -455,16 +454,6 @@ for i in libOSMesa*.so libGL.so ; do
 done
 popd
 
-%if 0%{?with_nvk}
-# Temporarily produce a modprobe file that enables nouveau+gsp for Turing/Ampere
-# until enabled upstream by default
-mkdir -p %{buildroot}%{_modprobedir}
-cat > %{buildroot}%{_modprobedir}/nouveau-gsp.conf << NOUVEAUEOF
-# Enable GSP firmware for Turing and Ampere
-options nouveau config=NvGspRm=1
-NOUVEAUEOF
-%endif
-
 %files filesystem
 %dir %{_libdir}/dri
 %if 0%{?with_hardware}
@@ -681,7 +670,6 @@ NOUVEAUEOF
 %{_datadir}/drirc.d/00-radv-defaults.conf
 %{_datadir}/vulkan/icd.d/radeon_icd.*.json
 %if 0%{?with_nvk}
-%{_modprobedir}/nouveau-gsp.conf
 %{_libdir}/libvulkan_nouveau.so
 %{_datadir}/vulkan/icd.d/nouveau_icd.*.json
 %endif
@@ -706,3 +694,4 @@ NOUVEAUEOF
 
 %changelog
 %autochangelog
+
